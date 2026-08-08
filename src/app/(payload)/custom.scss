@@ -553,6 +553,38 @@ th {
 
 
 /* =========================================================
+   LOGIN VIEW
+   ========================================================= */
+
+/*
+   Best-effort target: Payload's login view container has
+   historically used a .login class. If this doesn't visually
+   apply, send me the inspected HTML for the real selector
+   rather than guessing further.
+*/
+
+.login {
+  max-width: 420px;
+  margin: 96px auto 0;
+
+  background: var(--kg-surface);
+  border: 1px solid var(--kg-border-soft);
+  border-radius: var(--kg-radius);
+  box-shadow: var(--kg-shadow);
+
+  padding: 40px 36px;
+}
+
+@media (max-width: 600px) {
+  .login {
+    max-width: calc(100% - 32px);
+    margin: 48px auto 0;
+    padding: 28px 24px;
+  }
+}
+
+
+/* =========================================================
    LIST VIEW — WORDPRESS-STYLE ROW ACTIONS
    ========================================================= */
 
