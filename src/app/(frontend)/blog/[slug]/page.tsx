@@ -1,9 +1,10 @@
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import { getPayload } from 'payload'
-import { RichText } from '@payloadcms/richtext-lexical/react'
+import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 
 import config from '@payload-config'
+import { RichTextRenderer } from '@/components/blog/RichTextRenderer'
 
 type PageProps = {
   params: Promise<{
@@ -105,9 +106,7 @@ export default async function PostPage({ params }: PageProps) {
 
         {/* Content */}
         <div className="mt-12 rounded-[20px] bg-white px-6 py-8 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_4px_16px_rgba(0,0,0,0.04)] md:px-12 md:py-12">
-          <div className="prose prose-lg max-w-none prose-headings:tracking-tight prose-headings:text-[#1d1d1f] prose-p:text-[#1d1d1f] prose-a:text-[#0071e3]">
-            <RichText data={post.content} />
-          </div>
+          <RichTextRenderer content={post.content as DefaultTypedEditorState} />
         </div>
 
         {/* FAQs */}

@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-
+import { lexicalEditor, EXPERIMENTAL_TableFeature } from '@payloadcms/richtext-lexical'
 export const Posts: CollectionConfig = {
   slug: 'posts',
 
@@ -45,9 +45,29 @@ export const Posts: CollectionConfig = {
       type: 'text',
       required: true,
       unique: true,
+
+      hooks: {
+        beforeValidate: [
+          ({ data, value }) => {
+            if (value) return value
+
+            if (data?.title) {
+              return data.title
+                .toLowerCase()
+                .trim()
+                .replace(/[^a-z0-9\s-]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-')
+            }
+
+            return value
+          },
+        ],
+      },
+
       admin: {
         placeholder: 'article-url-slug',
-        description: 'The URL-friendly address for this article.',
+        description: 'Automatically generated from the title. You can edit it manually.',
       },
     },
 
@@ -59,6 +79,9 @@ export const Posts: CollectionConfig = {
       name: 'content',
       type: 'richText',
       required: true,
+      editor: lexicalEditor({
+        features: ({ defaultFeatures }) => [...defaultFeatures, EXPERIMENTAL_TableFeature()],
+      }),
       admin: {
         description: 'Write and format your article content.',
         components: {

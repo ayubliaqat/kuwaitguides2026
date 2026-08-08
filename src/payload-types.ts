@@ -198,7 +198,7 @@ export interface Post {
   id: number;
   title: string;
   /**
-   * The URL-friendly address for this article.
+   * Automatically generated from the title. You can edit it manually.
    */
   slug: string;
   /**
