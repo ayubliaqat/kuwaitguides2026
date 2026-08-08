@@ -7,8 +7,15 @@ export const Posts: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'author', 'publishedAt', 'updatedAt', 'slug'],
     group: 'Content',
-  },
+    preview: (doc) => {
+      const slug = doc?.slug
+      if (!slug) return null
 
+      // Use explicit local URL or fallback to environment variable
+      const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
+      return `${baseUrl}/blog/${slug}`
+    },
+  },
   versions: {
     drafts: {
       autosave: {
