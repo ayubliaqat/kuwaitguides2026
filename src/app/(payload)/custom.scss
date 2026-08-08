@@ -1,0 +1,719 @@
+:root {
+  --kg-blue: #0071e3;
+  --kg-blue-hover: #0077ed;
+  --kg-blue-soft: rgba(0, 113, 227, 0.08);
+
+  --kg-green: #1d9a61;
+  --kg-green-soft: rgba(29, 154, 97, 0.08);
+
+  --kg-red: #d93025;
+  --kg-red-soft: rgba(217, 48, 37, 0.08);
+
+  --kg-orange: #c47b16;
+  --kg-orange-soft: rgba(196, 123, 22, 0.08);
+
+  --kg-bg: #f5f5f7;
+  --kg-surface: #ffffff;
+  --kg-surface-soft: #fbfbfd;
+
+  --kg-text: #1d1d1f;
+  --kg-text-secondary: #6e6e73;
+  --kg-text-muted: #86868b;
+
+  --kg-border: #d2d2d7;
+  --kg-border-soft: #e5e5e7;
+
+  --kg-radius: 14px;
+  --kg-radius-small: 10px;
+
+  --kg-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 4px 16px rgba(0, 0, 0, 0.04);
+
+  --kg-shadow-editor:
+    0 2px 4px rgba(0, 0, 0, 0.03),
+    0 12px 32px rgba(0, 0, 0, 0.06);
+}
+
+
+/* =========================================================
+   GLOBAL ADMIN
+   ========================================================= */
+
+html,
+body {
+  background: var(--kg-bg);
+}
+
+body {
+  color: var(--kg-text);
+}
+
+
+/* =========================================================
+   LINKS
+   ========================================================= */
+
+a {
+  color: var(--kg-blue);
+}
+
+a:hover {
+  color: var(--kg-blue-hover);
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+button {
+  border-radius: var(--kg-radius-small);
+}
+
+.btn {
+  border-radius: var(--kg-radius-small);
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.btn--style-primary {
+  background: var(--kg-blue);
+  border-color: var(--kg-blue);
+  color: #fff;
+}
+
+.btn--style-primary:hover {
+  background: var(--kg-blue-hover);
+  border-color: var(--kg-blue-hover);
+}
+
+.btn--style-primary:active {
+  transform: translateY(1px);
+}
+
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
+
+input,
+textarea,
+select {
+  border-radius: var(--kg-radius-small);
+}
+
+input,
+textarea {
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--kg-blue);
+  box-shadow: 0 0 0 3px var(--kg-blue-soft);
+  outline: none;
+}
+
+
+/* =========================================================
+   LABELS
+   ========================================================= */
+
+.field-label {
+  color: var(--kg-text);
+  font-weight: 500;
+}
+
+.field-description {
+  color: var(--kg-text-secondary);
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   DOCUMENT EDITOR
+   ========================================================= */
+
+/*
+   Widened from 1180px so the main writing column keeps its
+   intended 900px page width once the native Payload sidebar
+   (minmax(260px, 320px) + gap) is placed alongside it.
+*/
+
+.document-fields {
+  max-width: 1440px;
+}
+
+
+/* =========================================================
+   PAGE SPACING
+   ========================================================= */
+
+.form {
+  gap: 28px;
+}
+
+.field-type {
+  margin-bottom: 22px;
+}
+
+
+/* =========================================================
+   TITLE FIELD
+   ========================================================= */
+
+/*
+   The first title field should feel like the beginning
+   of an editorial workspace rather than a normal form field.
+*/
+
+.document-fields
+  > .field-type:first-child
+  input {
+  min-height: 58px;
+  padding: 10px 14px;
+
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+
+  background: transparent;
+  border-color: transparent;
+  border-bottom-color: var(--kg-border);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.document-fields
+  > .field-type:first-child
+  input:focus {
+  border-color: transparent;
+  border-bottom-color: var(--kg-blue);
+  box-shadow: none;
+}
+
+
+/* =========================================================
+   RICH TEXT EDITOR — a real writing page, not a small card
+   ========================================================= */
+
+/*
+   Bordered-page treatment (Google Docs style): a clearly
+   distinct surface with subtle border/shadow, but sized and
+   behaved like a page that fills the viewport rather than a
+   fixed-height boxed field.
+*/
+
+.rich-text-lexical {
+  display: flex;
+  flex-direction: column;
+
+  background: var(--kg-surface);
+  border: 1px solid var(--kg-border-soft);
+  border-radius: var(--kg-radius);
+  overflow: hidden;
+  box-shadow: var(--kg-shadow-editor);
+
+  margin-top: 8px;
+  margin-bottom: 28px;
+}
+
+
+/* Toolbar — stays visible while the page scrolls */
+
+.rich-text-lexical__toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+
+  min-height: 52px;
+
+  border-bottom: 1px solid var(--kg-border-soft);
+  background: var(--kg-surface-soft);
+
+  padding: 8px 12px;
+}
+
+
+/* Writing area — fills available viewport height like an
+   actual page instead of stopping at a fixed box.
+   340px accounts for Payload's top bar + title field +
+   toolbar + surrounding margins; adjust once rendered if the
+   bottom of the page doesn't land cleanly.
+
+   Targeting [contenteditable="true"] instead of a guessed
+   class name: Lexical must set this attribute on the editable
+   div for typing to work at all, so it's a reliable hook
+   regardless of what internal class Payload uses for it.
+   .rich-text-lexical__content is kept alongside it in case a
+   real theme class by that name exists in some configs — the
+   extra selector is harmless if it never matches. */
+
+.rich-text-lexical__content,
+.rich-text-lexical [contenteditable='true'] {
+  flex: 1;
+  min-height: max(560px, calc(100vh - 340px));
+
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+
+  padding: 42px 54px !important;
+
+  font-size: 17px;
+  line-height: 1.75;
+
+  background: var(--kg-surface);
+}
+
+
+/* Paragraph rhythm */
+
+.rich-text-lexical__content p,
+.rich-text-lexical [contenteditable='true'] p {
+  margin-bottom: 1.15em;
+}
+
+
+/* Headings */
+
+.rich-text-lexical__content h1,
+.rich-text-lexical__content h2,
+.rich-text-lexical__content h3,
+.rich-text-lexical [contenteditable='true'] h1,
+.rich-text-lexical [contenteditable='true'] h2,
+.rich-text-lexical [contenteditable='true'] h3 {
+  letter-spacing: -0.02em;
+  color: var(--kg-text);
+}
+
+.rich-text-lexical__content h2,
+.rich-text-lexical [contenteditable='true'] h2 {
+  margin-top: 1.8em;
+  margin-bottom: 0.65em;
+  font-size: 28px;
+}
+
+.rich-text-lexical__content h3,
+.rich-text-lexical [contenteditable='true'] h3 {
+  margin-top: 1.5em;
+  margin-bottom: 0.55em;
+  font-size: 22px;
+}
+
+
+/* Links inside content */
+
+.rich-text-lexical__content a,
+.rich-text-lexical [contenteditable='true'] a {
+  color: var(--kg-blue);
+}
+
+
+/* =========================================================
+   SUPPORTING FIELDS
+   ========================================================= */
+
+/*
+   Keep the actual input clean.
+   The surrounding Payload field remains responsible
+   for layout and validation.
+*/
+
+.field-type.textarea textarea {
+  min-height: 120px;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   COLLAPSIBLE SECTIONS
+   ========================================================= */
+
+.collapsible {
+  background: var(--kg-surface);
+  border: 1px solid var(--kg-border-soft);
+  border-radius: var(--kg-radius);
+  box-shadow: var(--kg-shadow);
+
+  margin-top: 24px;
+  overflow: hidden;
+}
+
+.collapsible__header {
+  min-height: 56px;
+  padding: 0 20px;
+}
+
+.collapsible__header:hover {
+  background: var(--kg-surface-soft);
+}
+
+
+/* =========================================================
+   SEO SECTION
+   ========================================================= */
+
+/*
+   Targets the SEO collapsible via admin.className: 'kg-seo-collapsible'
+   set directly in Posts.ts, rather than matching on maxlength
+   attribute values — those change if the hard cap on meta.title /
+   meta.description is ever adjusted, this class won't.
+*/
+
+.kg-seo-collapsible {
+  border-color: var(--kg-border);
+}
+
+.kg-seo-collapsible .field-description {
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   SEO STATUS HELPERS
+   ========================================================= */
+
+.kg-seo-good {
+  color: var(--kg-green);
+}
+
+.kg-seo-warning {
+  color: var(--kg-orange);
+}
+
+.kg-seo-bad {
+  color: var(--kg-red);
+}
+
+
+/* Counter row — label/count on the left, status text on the right */
+
+.kg-seo-counter {
+  margin-top: 8px;
+}
+
+.kg-seo-counter__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  font-size: 12px;
+}
+
+.kg-seo-counter__row strong {
+  font-weight: 600;
+}
+
+
+/* SEO meter */
+
+.kg-seo-meter {
+  width: 100%;
+  height: 4px;
+
+  margin-top: 8px;
+
+  background: var(--kg-border-soft);
+  border-radius: 999px;
+
+  overflow: hidden;
+}
+
+.kg-seo-meter__fill {
+  height: 100%;
+  border-radius: inherit;
+
+  transition:
+    width 180ms ease,
+    background-color 180ms ease;
+}
+
+.kg-seo-meter__fill.good {
+  background: var(--kg-green);
+}
+
+.kg-seo-meter__fill.warning {
+  background: var(--kg-orange);
+}
+
+.kg-seo-meter__fill.bad {
+  background: var(--kg-red);
+}
+
+
+/* =========================================================
+   CHARACTER / WORD COUNTERS
+   ========================================================= */
+
+/*
+   Renders inside the .rich-text-lexical card itself (attached
+   via the content field's admin.components.afterInput), so it
+   needs its own padding to match the writing column rather
+   than relying on a page-level gap that assumed it would sit
+   outside the card.
+*/
+
+.kg-content-stats {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+
+  padding: 10px 54px;
+  border-top: 1px solid var(--kg-border-soft);
+  background: var(--kg-surface-soft);
+
+  color: var(--kg-text-muted);
+  font-size: 12px;
+}
+
+.kg-content-stats__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.kg-content-stats__value {
+  color: var(--kg-text);
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   ARRAY / FAQ
+   ========================================================= */
+
+.array-field {
+  background: var(--kg-surface);
+  border-radius: var(--kg-radius);
+}
+
+.array-field__row {
+  border-color: var(--kg-border-soft);
+  border-radius: var(--kg-radius-small);
+}
+
+
+/* =========================================================
+   UPLOAD / MEDIA
+   ========================================================= */
+
+.upload {
+  border-radius: var(--kg-radius);
+}
+
+.upload-dropzone {
+  border: 1px dashed var(--kg-border);
+  border-radius: var(--kg-radius);
+
+  background: var(--kg-surface-soft);
+
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease;
+}
+
+.upload-dropzone:hover {
+  border-color: var(--kg-blue);
+  background: var(--kg-blue-soft);
+}
+
+
+/* =========================================================
+   TABLES
+   ========================================================= */
+
+table {
+  border-radius: var(--kg-radius);
+  overflow: hidden;
+}
+
+th {
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   STATUS / BADGES
+   ========================================================= */
+
+.badge {
+  border-radius: 999px;
+}
+
+
+/* =========================================================
+   LIST VIEW — WORDPRESS-STYLE ROW ACTIONS
+   ========================================================= */
+
+/*
+   Rendered by the custom TitleCell component on the Posts
+   title column. Actions stay hidden until the row is hovered,
+   matching the WordPress list-table pattern.
+*/
+
+.kg-row-title__link {
+  color: var(--kg-text);
+  font-weight: 500;
+}
+
+.kg-row-title__link:hover {
+  color: var(--kg-blue);
+}
+
+.kg-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  margin-top: 4px;
+
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+
+tr:hover .kg-row-actions {
+  opacity: 1;
+}
+
+.kg-row-actions__item {
+  background: none;
+  border: none;
+  padding: 0;
+
+  color: var(--kg-text-secondary);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.kg-row-actions__item:hover {
+  color: var(--kg-blue);
+  text-decoration: underline;
+}
+
+.kg-row-actions__item--danger:hover {
+  color: var(--kg-red);
+}
+
+.kg-row-actions__item:disabled {
+  color: var(--kg-text-muted);
+  cursor: default;
+  text-decoration: none;
+}
+
+
+/* =========================================================
+   RIGHT-SIDE / SECONDARY FIELD FEEL
+   ========================================================= */
+
+/*
+   These utility classes are intended for custom
+   admin components and grouped editorial panels.
+*/
+
+.kg-editor-panel {
+  background: var(--kg-surface);
+  border: 1px solid var(--kg-border-soft);
+  border-radius: var(--kg-radius);
+  box-shadow: var(--kg-shadow);
+  padding: 20px;
+}
+
+.kg-editor-panel + .kg-editor-panel {
+  margin-top: 18px;
+}
+
+.kg-editor-panel__title {
+  margin-bottom: 6px;
+
+  color: var(--kg-text);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.kg-editor-panel__description {
+  color: var(--kg-text-secondary);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1000px) {
+  .rich-text-lexical__content {
+    min-height: max(480px, calc(100vh - 300px));
+  }
+}
+
+
+@media (max-width: 900px) {
+  .document-fields {
+    max-width: 100%;
+  }
+
+  .rich-text-lexical__toolbar {
+    position: static;
+  }
+
+  .rich-text-lexical__content,
+  .rich-text-lexical [contenteditable='true'] {
+    min-height: 440px;
+    padding: 32px !important;
+  }
+
+  .kg-content-stats {
+    padding: 10px 32px;
+  }
+}
+
+
+@media (max-width: 600px) {
+  .form {
+    gap: 20px;
+  }
+
+  .field-type {
+    margin-bottom: 18px;
+  }
+
+  .collapsible {
+    margin-top: 18px;
+    border-radius: 12px;
+  }
+
+  .rich-text-lexical {
+    border-radius: 12px;
+  }
+
+  .rich-text-lexical__content,
+  .rich-text-lexical [contenteditable='true'] {
+    min-height: 320px;
+    padding: 22px !important;
+    font-size: 16px;
+  }
+
+  .document-fields
+    > .field-type:first-child
+    input {
+    font-size: 24px;
+  }
+
+  .kg-content-stats {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    padding: 10px 22px;
+  }
+}
