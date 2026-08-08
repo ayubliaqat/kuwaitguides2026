@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import { getPayload } from 'payload'
+import { RichText } from '@payloadcms/richtext-lexical/react'
 
 import config from '@payload-config'
 
@@ -44,6 +45,8 @@ export default async function PostPage({ params }: PageProps) {
 
   const category =
     typeof firstCategory === 'object' && firstCategory !== null ? firstCategory : null
+
+  const faqs = Array.isArray(post.faqs) ? post.faqs : []
 
   return (
     <main className="min-h-screen bg-[#f5f5f7]">
@@ -102,10 +105,28 @@ export default async function PostPage({ params }: PageProps) {
 
         {/* Content */}
         <div className="mt-12 rounded-[20px] bg-white px-6 py-8 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_4px_16px_rgba(0,0,0,0.04)] md:px-12 md:py-12">
-          <div className="prose prose-lg max-w-none">{/* Lexical content will go here */}</div>
+          <div className="prose prose-lg max-w-none prose-headings:tracking-tight prose-headings:text-[#1d1d1f] prose-p:text-[#1d1d1f] prose-a:text-[#0071e3]">
+            <RichText data={post.content} />
+          </div>
         </div>
 
-        {/* FAQs will go here */}
+        {/* FAQs */}
+        {faqs.length > 0 && (
+          <div className="mt-8 rounded-[20px] bg-white px-6 py-8 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_4px_16px_rgba(0,0,0,0.04)] md:px-12 md:py-12">
+            <h2 className="text-2xl font-semibold tracking-tight text-[#1d1d1f]">
+              Frequently Asked Questions
+            </h2>
+
+            <div className="mt-6 divide-y divide-[#e5e5e7]">
+              {faqs.map((faq, index) => (
+                <div key={index} className="py-5 first:pt-0 last:pb-0">
+                  <h3 className="text-base font-semibold text-[#1d1d1f]">{faq.question}</h3>
+                  <p className="mt-2 text-[#6e6e73] leading-7">{faq.answer}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </article>
     </main>
   )

@@ -247,7 +247,6 @@ export const Posts: CollectionConfig = {
       name: 'author',
       type: 'relationship',
       relationTo: 'users',
-      required: true,
       admin: {
         position: 'sidebar',
       },
@@ -296,7 +295,6 @@ export const Posts: CollectionConfig = {
       name: 'featuredImage',
       type: 'upload',
       relationTo: 'media',
-      required: true,
       admin: {
         position: 'sidebar',
         description: 'Main image displayed with the article.',

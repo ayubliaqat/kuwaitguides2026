@@ -254,7 +254,7 @@ export interface Post {
     noIndex?: boolean | null;
     noFollow?: boolean | null;
   };
-  author: number | User;
+  author?: (number | null) | User;
   /**
    * Publication date displayed on the website.
    */
@@ -265,7 +265,7 @@ export interface Post {
   /**
    * Main image displayed with the article.
    */
-  featuredImage: number | Media;
+  featuredImage?: (number | null) | Media;
   /**
    * Estimated reading time in minutes.
    */
