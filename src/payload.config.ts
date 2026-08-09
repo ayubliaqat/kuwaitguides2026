@@ -1,5 +1,6 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { s3Storage } from '@payloadcms/storage-s3' // Import the S3 storage plugin
 import { Categories } from './collections/Categories'
 import { Tags } from './collections/Tags'
 import { Posts } from './collections/Posts'
@@ -45,5 +46,21 @@ export default buildConfig({
     },
   }),
   sharp,
-  plugins: [],
+  plugins: [
+    s3Storage({
+      collections: {
+        media: true, // Tells Payload to route the Media collection uploads to S3
+      },
+      bucket: process.env.SUPABASE_S3_BUCKET || 'media',
+      config: {
+        credentials: {
+          accessKeyId: process.env.SUPABASE_S3_ACCESS_KEY_ID || '',
+          secretAccessKey: process.env.SUPABASE_S3_SECRET_ACCESS_KEY || '',
+        },
+        region: process.env.SUPABASE_S3_REGION || '',
+        endpoint: process.env.SUPABASE_S3_ENDPOINT || '',
+        forcePathStyle: true, // Required for Supabase S3 compatibility
+      },
+    }),
+  ],
 })
