@@ -27,6 +27,7 @@ import { ContentStats as ContentStats_df16d5160f82ba4dbdde5ebb88b74564 } from '@
 import { SeoTitleField as SeoTitleField_4efd99eabd0baccf05991db850088cd7 } from '@/collections/Posts/components/SeoTitleField'
 import { SeoDescriptionField as SeoDescriptionField_90c8b85d1dfd2aed499c3056a461dbd9 } from '@/collections/Posts/components/SeoDescriptionField'
 import { default as default_29d742ad8de9b37cf19b5fefa5c7e9aa } from '../../../components/admin/Brand'
+import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 /** @type import('payload').ImportMap */
@@ -60,5 +61,6 @@ export const importMap = {
   "@/collections/Posts/components/SeoTitleField#SeoTitleField": SeoTitleField_4efd99eabd0baccf05991db850088cd7,
   "@/collections/Posts/components/SeoDescriptionField#SeoDescriptionField": SeoDescriptionField_90c8b85d1dfd2aed499c3056a461dbd9,
   "./components/admin/Brand#default": default_29d742ad8de9b37cf19b5fefa5c7e9aa,
+  "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }
